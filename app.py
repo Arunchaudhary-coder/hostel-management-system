@@ -38,7 +38,7 @@ def login():
             session['logged_in'] = True
             return redirect(url_for('index'))
         else:
-            return render_template('login.html', error=" incorrect username or password!")
+            return render_template('login.html', error="Invalid Username or Password!")
     return render_template('login.html')
 
 @app.route('/logout')
@@ -66,19 +66,45 @@ def allot_room():
     
     if room_no in rooms:
         if rooms[room_no]["type"] != gender:
-            return redirect(url_for('index', msg=f"Error: {room_no} only for {rooms[room_no]['type']}"))
+            return redirect(url_for('index', msg=f"Error: Room {room_no} is strictly for {rooms[room_no]['type']} only!"))
         
         if len(rooms[room_no]["students"]) < 2:
             rooms[room_no]["students"].append({
                 "name": name,
                 "roll_no": roll_no,
-                "phone": phone
+                "phone": phone,
+                "fee": "Pending",
+                "attendance": "Present"
             })
             save_data(rooms)
-            return redirect(url_for('index', msg=f"Success:{room_no} has alloted to { name } ({gender})"))
+            return redirect(url_for('index', msg=f"Success: Room {room_no} ({gender}) allotted to {name}!"))
         else:
-            return redirect(url_for('index', msg=f"Error: {room_no} occupied "))
-    return redirect(url_for('index', msg="Invalid Room Number!"))
+            return redirect(url_for('index', msg=f"Error: Room {room_no} is already full!"))
+    return redirect(url_for('index', msg="Error: Invalid Room Number!"))
+
+@app.route('/toggle_fee/<room_no>/<roll_no>')
+def toggle_fee(room_no, roll_no):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    rooms = load_data()
+    if room_no in rooms:
+        for s in rooms[room_no]["students"]:
+            if s['roll_no'] == roll_no:
+                s['fee'] = 'Paid' if s.get('fee') == 'Pending' else 'Pending'
+        save_data(rooms)
+    return redirect(url_for('index', msg=f"Success: Mess fee status updated for Roll No {roll_no}."))
+
+@app.route('/toggle_att/<room_no>/<roll_no>')
+def toggle_att(room_no, roll_no):
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+    rooms = load_data()
+    if room_no in rooms:
+        for s in rooms[room_no]["students"]:
+            if s['roll_no'] == roll_no:
+                s['attendance'] = 'Absent' if s.get('attendance') == 'Present' else 'Present'
+        save_data(rooms)
+    return redirect(url_for('index', msg=f"Success: Attendance updated for Roll No {roll_no}."))
 
 @app.route('/vacate/<room_no>/<roll_no>')
 def vacate_seat(room_no, roll_no):
@@ -88,5 +114,7 @@ def vacate_seat(room_no, roll_no):
     if room_no in rooms:
         rooms[room_no]["students"] = [s for s in rooms[room_no]["students"] if s['roll_no'] != roll_no]
         save_data(rooms)
-        return redirect(url_for('index', msg=f"{room_no} student removed."))
+        return redirect(url_for('index', msg=f"Success: Student removed from Room {room_no}."))
     return redirect(url_for('index'))
+if __name__ == '__main__':
+    app.run(debug=True)
