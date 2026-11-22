@@ -128,14 +128,7 @@ Isko download karke `README.md` naam se GitHub par upload kar do, ya niche se di
 ```markdown
 <div align="center">
 
-# 🏨 Hostel Management System
-
-### Web-Based Room Allocation & Student Record Portal
-
-![Python](https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-Framework-000000?style=for-the-badge&logo=flask&logoColor=white)
-![HTML5](https://img.shields.io/badge/HTML5-Frontend-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-Styling-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+🏨 Hostel Management System
 
 A clean, lightweight web application built using **Python (Flask)**, **HTML5**, and **CSS3** to digitize hostel room allocation, active student tracking, and room checkout workflows.
 
