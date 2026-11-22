@@ -17,6 +17,11 @@
         .full { color: red; font-weight: bold; }
         .badge-boy { background: #d6eaf8; color: #1b4f72; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
         .badge-girl { background: #fadbd8; color: #78281f; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .pill { padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; text-decoration: none; display: inline-block; margin-left: 5px; }
+        .paid { background: #d4efdf; color: #1e8449; }
+        .pending { background: #fcf3cf; color: #b7950b; }
+        .present { background: #d6eaf8; color: #21618c; }
+        .absent { background: #fadbd8; color: #922b21; }
     </style>
 </head>
 <body>
@@ -55,13 +60,13 @@
         <button type="submit">Allot Room</button>
     </form>
 
-    <h3>Room & Seat Status (Boys & Girls Wings)</h3>
+    <h3>Room, Seat, Mess Fee &amp; Attendance Status</h3>
     <table>
         <tr>
             <th>Room No</th>
             <th>Hostel Type</th>
             <th>Seat Status</th>
-            <th>Students in Room (Name, Roll No & Phone)</th>
+            <th>Allocated Students (Click Status to Update)</th>
         </tr>
         {% for room_no, info in rooms.items() %}
         <tr>
@@ -83,8 +88,12 @@
             <td>
                 {% if info.students %}
                     {% for s in info.students %}
-                        {{ s.name }} ({{ s.roll_no }}) - 📞 {{ s.phone }}
-                        <a href="/vacate/{{ room_no }}/{{ s.roll_no }}" style="color: red; text-decoration: none; margin-left: 5px;">[Remove]</a><br>
+                        <div style="margin-bottom: 6px;">
+                            <b>{{ s.name }}</b> ({{ s.roll_no }}) - Phone: {{ s.phone }}
+                            <a href="/toggle_fee/{{ room_no }}/{{ s.roll_no }}" class="pill {{ 'paid' if s.fee == 'Paid' else 'pending' }}">Mess Fee: {{ s.fee }}</a>
+                            <a href="/toggle_att/{{ room_no }}/{{ s.roll_no }}" class="pill {{ 'present' if s.attendance == 'Present' else 'absent' }}">{{ s.attendance }}</a>
+                            <a href="/vacate/{{ room_no }}/{{ s.roll_no }}" style="color: red; text-decoration: none; margin-left: 8px; font-weight: bold;">[Remove]</a>
+                        </div>
                     {% endfor %}
                 {% else %}
                     <span style="color: gray;">Empty</span>
