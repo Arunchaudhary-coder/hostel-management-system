@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hostel Management System</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; background-color: #f4f7f6; }
+        h2 { color: #2c3e50; }
+        .msg { padding: 10px; background: #dff0d8; color: #3c763d; border-radius: 5px; margin-bottom: 15px; font-weight: bold; }
+        .err { padding: 10px; background: #f2dede; color: #a94442; border-radius: 5px; margin-bottom: 15px; font-weight: bold; }
+        form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        input, select, button { padding: 10px; margin: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #27ae60; color: white; border: none; cursor: pointer; font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; background: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #1e3c72; color: white; }
+        .avail { color: green; font-weight: bold; }
+        .full { color: red; font-weight: bold; }
+        .badge-boy { background: #d6eaf8; color: #1b4f72; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .badge-girl { background: #fadbd8; color: #78281f; padding: 3px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h2>HOSTEL MANAGEMENT SYSTEM</h2>
+
+    {% if message %}
+        <div class="{{ 'err' if 'Error' in message else 'msg' }}">{{ message }}</div>
+    {% endif %}
+
+    <form action="/allot" method="POST">
+        <h3>New Student Entry</h3>
+        <input type="text" name="name" placeholder="Student Name" required>
+        <input type="text" name="roll_no" placeholder="Roll Number" required>
+        <input type="tel" name="phone" placeholder="Phone Number (10 digits)" pattern="[0-9]{10}" required>
+        
+        <select name="gender" required>
+            <option value="">-- Gender --</option>
+            <option value="Boys">Boy</option>
+            <option value="Girls">Girl</option>
+        </select>
+
+        <select name="room_no" required>
+            <option value="">-- Select Room --</option>
+            <optgroup label="Boys Hostel">
+                <option value="B-101">B-101 (Boys)</option>
+                <option value="B-102">B-102 (Boys)</option>
+                <option value="B-103">B-103 (Boys)</option>
+            </optgroup>
+            <optgroup label="Girls Hostel">
+                <option value="G-101">G-101 (Girls)</option>
+                <option value="G-102">G-102 (Girls)</option>
+                <option value="G-103">G-103 (Girls)</option>
+            </optgroup>
+        </select>
+        <button type="submit">Allot Room</button>
+    </form>
+
+    <h3>Room & Seat Status (Boys & Girls Wings)</h3>
+    <table>
+        <tr>
+            <th>Room No</th>
+            <th>Hostel Type</th>
+            <th>Seat Status</th>
+            <th>Students in Room (Name, Roll No & Phone)</th>
+        </tr>
+        {% for room_no, info in rooms.items() %}
+        <tr>
+            <td><b>{{ room_no }}</b></td>
+            <td>
+                {% if info.type == 'Boys' %}
+                    <span class="badge-boy">Boys Hostel</span>
+                {% else %}
+                    <span class="badge-girl">Girls Hostel</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if info.students|length < 2 %}
+                    <span class="avail">{{ 2 - info.students|length }} Seat Available</span>
+                {% else %}
+                    <span class="full">Room Full</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if info.students %}
+                    {% for s in info.students %}
+                        {{ s.name }} ({{ s.roll_no }}) - 📞 {{ s.phone }}
+                        <a href="/vacate/{{ room_no }}/{{ s.roll_no }}" style="color: red; text-decoration: none; margin-left: 5px;">[Remove]</a><br>
+                    {% endfor %}
+                {% else %}
+                    <span style="color: gray;">Empty</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="/" style="display: inline-block; margin-top: 20px; background: #1e3c72; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">← Back to Home Page</a>
+    <a href="/logout" style="display: inline-block; margin-top: 20px; margin-left: 10px; background: #e74c3c; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Logout</a>
+
+</body>
+</html>
