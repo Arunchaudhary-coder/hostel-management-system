@@ -231,7 +231,6 @@ Visit `http://127.0.0.1:5000` in your browser.
 B.Tech Information Technology — MITS Gwalior
 
 GitHub: [@Arunchaudhary-coder](https://www.google.com/search?q=https://github.com/Arunchaudhary-coder)
-website link -- (hostetmanagement.pythonanywhere.com)
 
 ```
 
