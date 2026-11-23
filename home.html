@@ -1,42 +1,402 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Hostel Management System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostel Management System - Campus Portal</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; background-color: #f4f7f6; }
-        .top-box { background-color: #1e3c72; color: white; text-align: center; padding: 50px 20px; }
-        .btn { background-color: #27ae60; color: white; padding: 15px 25px; text-decoration: none; font-size: 18px; border-radius: 5px; font-weight: bold; display: inline-block; margin-top: 15px; }
-        .grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 30px; }
-        .card { background: white; padding: 20px; width: 250px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
-        .card h3 { color: #1e3c72; margin-top: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* Top Navbar */
+        .navbar {
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+        }
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 0.4px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .brand span {
+            color: #38bdf8;
+        }
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            margin-left: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .nav-links a:hover {
+            color: #38bdf8;
+        }
+        .nav-login-btn {
+            background-color: #0284c7;
+            color: #ffffff !important;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600 !important;
+        }
+        .nav-login-btn:hover {
+            background-color: #0369a1;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #0284c7 100%);
+            color: #ffffff;
+            padding: 75px 25px 85px 25px;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: #e0f2fe;
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+        }
+        .hero h1 {
+            font-size: 40px;
+            font-weight: 800;
+            max-width: 780px;
+            margin: 0 auto 14px auto;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 17px;
+            color: #dbeafe;
+            max-width: 640px;
+            margin: 0 auto 30px auto;
+        }
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background-color: #10b981;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+            transition: transform 0.2s ease, background-color 0.2s ease;
+        }
+        .btn-primary:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: background-color 0.2s ease;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.22);
+        }
+
+        /* Stats Strip */
+        .stats-wrap {
+            max-width: 1020px;
+            margin: -42px auto 0 auto;
+            padding: 0 20px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 16px;
+        }
+        .stat-box {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+            border-bottom: 4px solid #0284c7;
+        }
+        .stat-number {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* Main Sections */
+        .container {
+            max-width: 1020px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 34px;
+        }
+        .section-header h2 {
+            font-size: 28px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .section-header p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        /* Facilities Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 22px;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 26px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.1);
+        }
+        .card-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 4px 10px;
+            border-radius: 5px;
+            margin-bottom: 12px;
+            background-color: #e0f2fe;
+            color: #0369a1;
+        }
+        .card h3 {
+            font-size: 19px;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .card p {
+            font-size: 14.5px;
+            color: #475569;
+        }
+
+        /* Wings Banner */
+        .wings-box {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .wing-card {
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .boys-wing {
+            background-color: #eff6ff;
+            border-left: 5px solid #2563eb;
+        }
+        .girls-wing {
+            background-color: #fdf2f8;
+            border-left: 5px solid #db2777;
+        }
+        .wing-card h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+            color: #0f172a;
+        }
+        .wing-card p {
+            font-size: 14px;
+            color: #334155;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 13.5px;
+            margin-top: 60px;
+        }
+        .footer strong {
+            color: #ffffff;
+        }
+
+        @media (max-width: 640px) {
+            .navbar {
+                padding: 14px 20px;
+                flex-direction: column;
+                gap: 10px;
+            }
+            .nav-links a {
+                margin: 0 10px;
+            }
+            .hero h1 {
+                font-size: 30px;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-box">
-        <h1>Welcome to Hostel Management Portal</h1>
-        <p>Check Room Availability &amp; Allot Hostel Seats Easily</p>
-        <a href="/login" class="btn">Admin Login &amp; Manage Rooms →</a>
+    <!-- Top Navigation Bar -->
+    <nav class="navbar">
+        <a href="/" class="brand">CAMPUS<span>HOSTEL</span></a>
+        <div class="nav-links">
+            <a href="#facilities">Facilities</a>
+            <a href="#wings">Hostel Wings</a>
+            <a href="/login" class="nav-login-btn">Admin Login</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-badge">Residential &amp; Room Allotment Portal</div>
+        <h1>Smart Hostel Management &amp; Seat Availability System</h1>
+        <p>Dedicated Boys and Girls residential wings with real-time seat tracking, mess fee status, and daily attendance management.</p>
+        <div class="hero-actions">
+            <a href="/login" class="btn-primary">Warden Login &amp; Manage Rooms →</a>
+            <a href="#facilities" class="btn-secondary">Explore 24×7 Facilities</a>
+        </div>
+    </section>
+
+    <!-- Quick Stats Strip -->
+    <div class="stats-wrap">
+        <div class="stats-grid">
+            <div class="stat-box">
+                <div class="stat-number">6 Rooms</div>
+                <div class="stat-label">3 Boys &amp; 3 Girls Rooms</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">12 Seats</div>
+                <div class="stat-label">2 Students Capacity Per Room</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">24×7</div>
+                <div class="stat-label">Security, Wi-Fi &amp; Power Backup</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">Live Sync</div>
+                <div class="stat-label">Seats, Mess Fee &amp; Attendance</div>
+            </div>
+        </div>
     </div>
 
-    <div class="grid">
-        <div class="card">
-            <h3>Capacity: 12 Seats</h3>
-            <p>6 Rooms Total (Boys &amp; Girls Wings, 2 Seats per Room)</p>
+    <!-- Facilities Section -->
+    <section id="facilities" class="container">
+        <div class="section-header">
+            <h2>Campus Hostel Facilities</h2>
+            <p>Designed for a safe, focused, and comfortable student living environment</p>
         </div>
-        <div class="card">
-            <h3>24×7 Security</h3>
-            <p>Full CCTV Surveillance &amp; Dedicated Warden Support</p>
+
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-tag">24×7 Operations</div>
+                <h3>Round-the-Clock Security</h3>
+                <p>Continuous CCTV monitoring, entry control, and active warden supervision to keep residents safe at all hours.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">24×7 Connectivity</div>
+                <h3>High-Speed Wi-Fi &amp; Power</h3>
+                <p>Uninterrupted campus internet access and reliable power backup so students can study without disruption.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Dining &amp; Hygiene</div>
+                <h3>Hygienic Mess &amp; RO Water</h3>
+                <p>Clean dining hall serving freshly prepared meals along with purified 24×7 RO drinking water facilities.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Room Comfort</div>
+                <h3>Spacious Twin Sharing</h3>
+                <p>Well-ventilated rooms with dedicated beds, study desks, and storage for up to two students per room.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Health &amp; Care</div>
+                <h3>Medical &amp; First-Aid Support</h3>
+                <p>Immediate first-aid readiness and quick access to medical assistance during emergencies.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Digital Records</div>
+                <h3>Transparent Room &amp; Fee Status</h3>
+                <p>Instant tracking of vacant seats, 10-digit student contact numbers, mess fee status, and attendance.</p>
+            </div>
         </div>
-        <div class="card">
-            <h3>24×7 Wi-Fi &amp; Power</h3>
-            <p>High-Speed Campus Internet &amp; Electricity Backup</p>
+    </section>
+
+    <!-- Separate Wings Section -->
+    <section id="wings" class="container">
+        <div class="section-header">
+            <h2>Dedicated Residential Wings</h2>
+            <p>Strict wing separation with automated backend validation during allotment</p>
         </div>
-        <div class="card">
-            <h3>Hygienic Mess</h3>
-            <p>Fresh Nutritious Meals &amp; RO Drinking Water</p>
+
+        <div class="wings-box">
+            <div class="wing-card boys-wing">
+                <h3>Boys Hostel Wing (B-101 to B-103)</h3>
+                <p>3 dedicated rooms with 2 seats each (6 seats total). System automatically restricts allotment to male students only.</p>
+            </div>
+            <div class="wing-card girls-wing">
+                <h3>Girls Hostel Wing (G-101 to G-103)</h3>
+                <p>3 dedicated rooms with 2 seats each (6 seats total). System automatically restricts allotment to female students only.</p>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <strong>Hostel Management System</strong> — Built with HTML5, CSS3, Jinja2, Python (Flask) &amp; JSON
+    </footer>
 
 </body>
 </html>
